@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const port = 5000;
 
 app.post("/employeeRegister", (req, res) => {
   const sql =
@@ -64,11 +65,13 @@ app.post("/employeeEdit/:id", (req, res) => {
 });
 app.delete("/employeeDelete/:id", (req, res) => {
   const id = req.params.id;
-  const sql = "SELECT * FROM employee_info WHERE `id` = ?";
-  const value = [id];
+  const sql = "DELETE FROM employee_info WHERE id=?";
+  console.log("id", id);
   connection.query(sql, value, (error, result) => {
     if (error) return res.json({ message: "Employee is not deleted" + error });
     return res.json({ success: "Employee deleted successfully" });
   });
 });
-app.listen(3000);
+app.listen(port, () => {
+  console.log(`listening on port ${port} `);
+});
